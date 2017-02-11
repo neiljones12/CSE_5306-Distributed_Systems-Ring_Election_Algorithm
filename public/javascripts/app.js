@@ -29,7 +29,8 @@ app.factory('socket', function ($rootScope) {
 app.controller('Controller', function ($scope, $http, $localStorage, $location, socket) {
 
     $scope.data = [];
-    $scope.start = false;
+    $scope.message = [];
+    $scope.startMessage = false;
     //test data
     $scope.data = [{ process: 1, online: true }, { process: 2, online: true }, { process: 3, online: true }, { process: 4, online: true }, { process: 5, online: true }, { process: 6, online: true }];
 
@@ -46,7 +47,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 process: 1,
                 online: data,
                 successor: 2,
-                isLeader: false
+                isLeader: false,
+                current: false
             });
         }
         else {
@@ -71,7 +73,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 process: 2,
                 online: data,
                 successor: 3,
-                isLeader: false
+                isLeader: false,
+                current: false
             });
         }
         else {
@@ -96,7 +99,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 process: 3,
                 online: data,
                 successor: 4,
-                isLeader: false
+                isLeader: false,
+                current: false
             });
         }
         else {
@@ -121,7 +125,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 process: 4,
                 online: data,
                 successor: 5,
-                isLeader: false
+                isLeader: false,
+                current: false
             });
         }
         else {
@@ -146,7 +151,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 process: 5,
                 online: data,
                 successor: 6,
-                isLeader: false
+                isLeader: false,
+                current: false
             });
         }
         else {
@@ -171,7 +177,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 process: 6,
                 online: data,
                 successor: 1,
-                isLeader: false
+                isLeader: false,
+                current: false
             });
         }
         else {
@@ -182,5 +189,21 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             }
         }
     });
+
+    $scope.start = function () {
+        $scope.startMessage = true;
+        $scope.counter = 0;
+        $scope.displayCurrent($scope.counter);
+
+    };
+
+    $scope.displayCurrent = function (id) {
+        $scope.data[id].current = true;
+
+        $scope.message.push({
+            currentProcess: id,
+            successor: $scope.data[id].successor
+        });
+    };
 
 });

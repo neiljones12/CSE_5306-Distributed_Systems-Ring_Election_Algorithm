@@ -26,8 +26,15 @@
                         <hr />
                         <div ng-repeat="d in data">
                             <div ng-show="d.online">
-                                <button type="button" class="btn btn-outline-success">{{d.process}}</button>
-                                <button type="button" class="btn btn-outline-danger">Crash</button>
+                                <div ng-show="d.current"> 
+                                    <button type="button" class="btn btn-success">{{d.process}}</button>
+                                    <button type="button" class="btn btn-outline-danger">Crash</button>
+
+                                </div>
+                                <div ng-hide="d.current">
+                                    <button type="button" class="btn btn-outline-success">{{d.process}}</button>
+                                    <button type="button" class="btn btn-outline-danger">Crash</button> 
+                                </div> 
                             </div>
                             <div ng-hide="d.online">
                                 <button type="button" class="btn btn-outline-secondary">{{d.process}}</button>
@@ -37,7 +44,7 @@
                         </div> 
                     </div>
                     <div class="card-footer text-right">
-                            <button type="button" class="btn btn-secondary btn-lg">Start</button>
+                            <button type="button" class="btn btn-secondary btn-lg" ng-click="start()">Start</button>
                     </div> 
                 </div>  
                
@@ -46,10 +53,10 @@
                 <div class="card">
                     <h3 class="card-header">Log</h3>
                     <div class="card-block">
-                        <div ng-show="start">
-
+                        <div ng-show="startMessage">
+                            {{message}}
                         </div>
-                        <div ng-hide="start">
+                        <div ng-hide="startMessage">
                             <p class="text-muted">The log of the working will show here once the simulation has started</p>
                         </div> 
                     </div>
