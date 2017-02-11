@@ -27,38 +27,160 @@ app.factory('socket', function ($rootScope) {
 
 //Controller definition 
 app.controller('Controller', function ($scope, $http, $localStorage, $location, socket) {
-    
-    $scope.data = [];
 
-    socket.on('server_1_connection', (data) => {
-        $scope.data.push({
-            server: 1
-        });
+    $scope.data = [];
+    $scope.start = false;
+    //test data
+    $scope.data = [{ process: 1, online: true }, { process: 2, online: true }, { process: 3, online: true }, { process: 4, online: true }, { process: 5, online: true }, { process: 6, online: true }];
+
+    socket.on('process_1_connection', (data) => {
+        var isExist = false;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process != undefined && $scope.data[i].process == 1) {
+                isExist = true;
+            }
+        }
+
+        if (!isExist) {
+            $scope.data.push({
+                process: 1,
+                online: data,
+                successor: 2,
+                isLeader: false
+            });
+        }
+        else {
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].process != undefined && $scope.data[i].process == 1) {
+                    $scope.data[i].online = data
+                }
+            }
+        }
     });
-    socket.on('server_2_connection', (data) => { 
-        $scope.data.push({
-            server: 2
-        });
+
+    socket.on('process_2_connection', (data) => {
+        var isExist = false;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process != undefined && $scope.data[i].process == 2) {
+                isExist = true;
+            }
+        }
+
+        if (!isExist) {
+            $scope.data.push({
+                process: 2,
+                online: data,
+                successor: 3,
+                isLeader: false
+            });
+        }
+        else {
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].process != undefined && $scope.data[i].process == 2) {
+                    $scope.data[i].online = data
+                }
+            }
+        }
     });
-    socket.on('server_3_connection', (data) => {
-        $scope.data.push({
-            server: 3
-        });
+
+    socket.on('process_3_connection', (data) => {
+        var isExist = false;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process != undefined && $scope.data[i].process == 3) {
+                isExist = true;
+            }
+        }
+
+        if (!isExist) {
+            $scope.data.push({
+                process: 3,
+                online: data,
+                successor: 4,
+                isLeader: false
+            });
+        }
+        else {
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].process != undefined && $scope.data[i].process == 3) {
+                    $scope.data[i].online = data
+                }
+            }
+        }
     });
-    socket.on('server_4_connection', (data) => {
-        $scope.data.push({
-            server: 4
-        });
+
+    socket.on('process_4_connection', (data) => {
+        var isExist = false;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process != undefined && $scope.data[i].process == 4) {
+                isExist = true;
+            }
+        }
+
+        if (!isExist) {
+            $scope.data.push({
+                process: 4,
+                online: data,
+                successor: 5,
+                isLeader: false
+            });
+        }
+        else {
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].process != undefined && $scope.data[i].process == 4) {
+                    $scope.data[i].online = data
+                }
+            }
+        }
     });
-    socket.on('server_5_connection', (data) => {
-        $scope.data.push({
-            server: 5
-        });
+
+    socket.on('process_5_connection', (data) => {
+        var isExist = false;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process != undefined && $scope.data[i].process == 5) {
+                isExist = true;
+            }
+        }
+
+        if (!isExist) {
+            $scope.data.push({
+                process: 5,
+                online: data,
+                successor: 6,
+                isLeader: false
+            });
+        }
+        else {
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].process != undefined && $scope.data[i].process == 5) {
+                    $scope.data[i].online = data
+                }
+            }
+        }
     });
-    socket.on('server_6_connection', (data) => {
-        $scope.data.push({
-            server: 6
-        });
+
+    socket.on('process_6_connection', (data) => {
+        var isExist = false;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process != undefined && $scope.data[i].process == 6) {
+                isExist = true;
+            }
+        }
+
+        if (!isExist) {
+            $scope.data.push({
+                process: 6,
+                online: data,
+                successor: 1,
+                isLeader: false
+            });
+        }
+        else {
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].process != undefined && $scope.data[i].process == 6) {
+                    $scope.data[i].online = data
+                }
+            }
+        }
     });
 
 });

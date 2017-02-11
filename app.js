@@ -19,7 +19,7 @@ class Server {
 
     constructor() {
         this.port = process.env.PORT || 3000;
-        this.host = `localhost`;
+        this.host = 'localhost';
 
         this.app = express();
         this.http = http.Server(this.app);
@@ -43,8 +43,8 @@ class Server {
     includeRoutes() {
         new routes(this.app, this.socket).routesConfig();
     }
-    /* Including app Routes ends*/
 
+    /* Including app Routes ends*/
     appExecute() {
 
         this.appConfig();
