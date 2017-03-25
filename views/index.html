@@ -5,66 +5,78 @@
     <link href="stylesheets/bootstrap.min.css" rel="stylesheet" />
     <link href="stylesheets/font-awesome.css" rel="stylesheet" />
 </head>
-<body ng-controller="Controller">
-
-    <div class="containter" style="padding:50px">
-         <div class="row">
-             <div class="col-lg-12 text-center">
-                 <h1>Assignment 2</h1>
-                 <p class="lead">Submitted by: Neil Jones (1001371689)</p> 
-                 <br/>
-             </div> 
-         </div>
-        <div class="row">
-            <div class="col-lg-4"> 
-                <div class="card">
-                    <h3 class="card-header">Ring Election Algorithm</h3>
-                    <div class="card-block">
-                        <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
-                        <p>First we need to start the processes. Click <a class="processes"><span class="lead" style="color:blue">here</span> </a> to launch the 6 processes</p>
-                        <p class="small">Make sure pop ups are allowed on this page</p>
-                        <hr />
-                        <div ng-repeat="d in data">
-                            <div ng-show="d.online">
-                                <div ng-show="d.current"> 
-                                    <button type="button" class="btn btn-success">{{d.process}}</button>
-                                    <button type="button" class="btn btn-outline-danger">Crash</button>
-
-                                </div>
-                                <div ng-hide="d.current">
-                                    <button type="button" class="btn btn-outline-success">{{d.process}}</button>
-                                    <button type="button" class="btn btn-outline-danger">Crash</button> 
-                                </div> 
-                            </div>
-                            <div ng-hide="d.online">
-                                <button type="button" class="btn btn-outline-secondary">{{d.process}}</button>
-                                <button type="button" class="btn btn-outline-info">Restart</button>
-                            </div>
-                            <br />
-                        </div> 
-                    </div>
-                    <div class="card-footer text-right">
-                            <button type="button" class="btn btn-secondary btn-lg" ng-click="start()">Start</button>
-                    </div> 
-                </div>  
-               
+<body ng-controller="Controller" ng-init="init()">
+    <div ng-show="client">
+        <div class="containter" style="padding:50px">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h1>Assignment 2</h1>
+                    <p class="lead">Submitted by: Neil Jones (1001371689)</p>
+                    <br />
+                </div>
             </div>
-            <div class="col-lg-8">
-                <div class="card">
-                    <h3 class="card-header">Log</h3>
-                    <div class="card-block">
-                        <div ng-show="startMessage">
-                            {{message}}
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <h3 class="card-header">Ring Election Algorithm</h3>
+                        <div class="card-block">
+                            <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
+                            <p>First we need to start the processes. Click <a class="processes"><span class="lead" style="color:blue">here</span> </a> to launch the 6 processes</p>
+                            <p class="small">Make sure pop ups are allowed on this page</p>
+                            <hr />
+                            <div ng-repeat="d in data">
+                                <div ng-show="d.online">
+                                    <div ng-show="d.isLeader">
+                                        <button type="button" class="btn btn-success">Process: {{d.process}}</button>
+                                        <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
+
+                                    </div>
+                                    <div ng-hide="d.isLeader">
+                                        <button type="button" class="btn btn-outline-success">{{d.process}}</button>
+                                        <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
+                                    </div>
+                                </div>
+                                <div ng-hide="d.online">
+                                    <button type="button" class="btn btn-outline-secondary">{{d.process}}</button>
+                                    <button type="button" class="btn btn-outline-info" ng-click="restart(d.process)">Restart</button>
+                                </div>
+                                <br />
+                            </div>
                         </div>
-                        <div ng-hide="startMessage">
-                            <p class="text-muted">The log of the working will show here once the simulation has started</p>
-                        </div> 
+                        <div class="card-footer text-right">
+                            <div ng-show="start">
+                                <button type="button" class="btn btn-secondary btn-lg" ng-click="start()">Start</button>
+                            </div>
+                            <div ng-hide="start">
+                                <button type="button" class="btn btn-secondary btn-lg" ng-click="stop()">Stop</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <h3 class="card-header">Log</h3>
+                        <div class="card-block">
+                            <div ng-hide="startMessage">
+                                <div ng-repeat="m in logMessage">
+                                    <p>{{m}}</p>
+                                </div>
+                            </div>
+                            <div ng-show="startMessage">
+                                <p class="text-muted">The log of the working will show here once the simulation has started</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
     </div>
+    <div ng-hide="client">
+        <h1>This tab was created to start a process.</h1>
+        <h2>Go to the tab with address http://localhost:3000 to start the simulation</h2>
+    </div>
+
 
     <script src="javascripts/angular.js"></script>
     <script src="javascripts/jquery-3.1.1.slim.min.js"></script>
