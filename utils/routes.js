@@ -166,7 +166,7 @@ class Routes {
                     closed: true
                 };
 
-                socket.emit('process_connection', this.processes);
+                socket.emit('process_connection', obj);
             });
         });
 
