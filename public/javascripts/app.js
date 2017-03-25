@@ -42,21 +42,35 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
         }
     }
 
+    var log_sort_by = function (field, reverse, primer) {
+
+        var key = primer ?
+            function (x) { return primer(x[field]) } :
+            function (x) { return x[field] };
+
+        reverse = !reverse ? 1 : -1;
+
+        return function (a, b) {
+            return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+        }
+    }
+
     $scope.init = function () {
-        $scope.data = [];
-        $scope.message = [];
+
         $scope.startMessage = true;
-        $scope.logMessage = [];
-        $scope.start = true;
+        $scope.initialize = false; 
         $scope.client = false;
+        $scope.data = [];
+        $scope.message = []; 
+        $scope.logMessage = [];
+
         if ($location.port() == 3000) {
             $scope.client = true;
         };
     };
-    //test data
-    // $scope.data = [{ process: 1, online: true }, { process: 2, online: true }, { process: 3, online: true }, { process: 4, online: true }, { process: 5, online: true }, { process: 6, online: true }];
-
+    
     socket.on('process_connection', (data) => {
+        $scope.initialize = true;
         var check = true;
         for (var i = 0; i < $scope.data.length; i++) {
             if ($scope.data[i].process == data.process) {
@@ -74,41 +88,38 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
                 current: false,
                 closed: data.closed
             });
+            $scope.data.sort(sort_by('process', true, parseInt));
         }
-        
-        console.log(data);
     });
 
-    $scope.start = function () {
+    $scope.startSimulation = function () {
 
         $scope.startMessage = false;
-        $scope.start = false;
 
         var max = 0;
         for (var i = 0; i < $scope.data.length; i++) {
             if ($scope.data[i].online) {
-                $scope.logMessage.push($scope.data[i].process + " sends message to " + $scope.data[i].successor);
+                $scope.logMessage.push({
+                    id: $scope.logMessage.length,
+                    message: $scope.data[i].process +" sends message"
+                });
                 if ($scope.data[i].process > max) {
                     max = $scope.data[i].process;
                 }
             }
         }
         $scope.data[max - 1].isLeader = true;
-        $scope.logMessage.push("Process " + max + " is chosen as the leader as it is the largest");
-    };
-
-    $scope.stop = function () {
-        $scope.start = true;
-    };
-
-    $scope.displayCurrent = function (id) {
-        $scope.data[id].current = true;
-
-        $scope.message.push({
-            currentProcess: id,
-            successor: $scope.data[id].successor
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "Process " + max + " is chosen as the leader as it is the largest"
         });
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "-----------------------------------------"
+        });
+        $scope.logMessage.sort(log_sort_by('id', true, parseInt));
     };
+
 
     $scope.crash = function (id) {
         for (var i = 0; i < $scope.data.length; i++) {

@@ -21,8 +21,13 @@
                         <h3 class="card-header">Ring Election Algorithm</h3>
                         <div class="card-block">
                             <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
-                            <p>First we need to start the processes. Click <a class="processes"><span class="lead" style="color:blue">here</span> </a> to launch the 6 processes</p>
-                            <p class="small">Make sure pop ups are allowed on this page</p>
+                            <div ng-hide="initialize">
+                                <p>First we need to start the processes. Click <a class="processes"><span class="lead" style="color:blue">here</span> </a> to launch the 6 processes</p>
+                                <p class="small">Make sure pop ups are allowed on this page</p>
+                            </div>
+                            <div ng-show="initialize">
+
+                            </div> 
                             <hr />
                             <div ng-repeat="d in data">
                                 <div ng-show="d.online">
@@ -44,12 +49,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-right">
-                            <div ng-show="start">
-                                <button type="button" class="btn btn-secondary btn-lg" ng-click="start()">Start</button>
-                            </div>
-                            <div ng-hide="start">
-                                <button type="button" class="btn btn-secondary btn-lg" ng-click="stop()">Stop</button>
-                            </div>
+                                <button type="button" class="btn btn-secondary btn-lg" ng-click="startSimulation()">Start</button>
                         </div>
                     </div>
 
@@ -60,7 +60,7 @@
                         <div class="card-block">
                             <div ng-hide="startMessage">
                                 <div ng-repeat="m in logMessage">
-                                    <p>{{m}}</p>
+                                    <p>{{m.message}}</p>
                                 </div>
                             </div>
                             <div ng-show="startMessage">
