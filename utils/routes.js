@@ -12,14 +12,6 @@ class Routes {
         this.process_4 = 3004;
         this.process_5 = 3005;
         this.process_6 = 3006;
-
-        //Refresh Rates
-        this.time_1 = 3000;
-        this.time_2 = this.time_1 + 3000;
-        this.time_3 = this.time_2 + 3000;
-        this.time_4 = this.time_3 + 3000;
-        this.time_5 = this.time_4 + 3000;
-        this.time_6 = this.time_5 + 3000;
     }
 
     appRoutes() {

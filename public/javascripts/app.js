@@ -90,6 +90,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
             });
             $scope.data.sort(sort_by('process', true, parseInt));
         }
+
+        $scope.startSimulation();
     });
 
     $scope.startSimulation = function () {
@@ -107,6 +109,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
                     max = $scope.data[i].process;
                 }
             }
+            $scope.data[i].isLeader = false;
         }
         $scope.data[max - 1].isLeader = true;
         $scope.logMessage.push({
@@ -124,10 +127,11 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
     $scope.crash = function (id) {
         for (var i = 0; i < $scope.data.length; i++) {
             if ($scope.data[i].process == id) {
-                $scope.data[i].online = false;
-                socket.emit('test');
+                $scope.data[i].online = false; 
             }
         }
+
+        $scope.startSimulation();
     };
 
     $scope.restart = function (id) {
@@ -145,6 +149,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
                 }
             }
         }
+
+        $scope.startSimulation();
     };
 
 });
