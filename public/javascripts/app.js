@@ -61,12 +61,75 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
         $scope.initialize = false; 
         $scope.client = false;
         $scope.data = [];
+        $scope.data = [
+            {
+                process:1,
+                online: false,
+                isLeader: false,
+                current: false,
+                closed: true
+            },
+            {
+                process: 2,
+                online: false,
+                isLeader: false,
+                current: false,
+                closed: true
+            },
+            {
+                process: 3,
+                online: false,
+                isLeader: false,
+                current: false,
+                closed: true
+            },
+            {
+                process: 4,
+                online: false,
+                isLeader: false,
+                current: false,
+                closed: true
+            },
+            {
+                process: 5,
+                online: false,
+                isLeader: false,
+                current: false,
+                closed: true
+            },
+            {
+                process: 6,
+                online: false,
+                isLeader: false,
+                current: false,
+                closed: true
+            }
+        ];
+
         $scope.message = []; 
         $scope.logMessage = [];
 
         if ($location.port() == 3000) {
             $scope.client = true;
-        };
+        }
+        else
+        {
+            switch ($location.port()) {
+                case 3001: $scope.processNo = 1;
+                    break;
+                case 3002: $scope.processNo = 2;
+                    break;
+                case 3003: $scope.processNo = 3;
+                    break;
+                case 3004: $scope.processNo = 4;
+                    break;
+                case 3005: $scope.processNo = 5;
+                    break;
+                case 3006: $scope.processNo = 6;
+                    break;
+            }
+        }
+        
     };
     
     socket.on('process_connection', (data) => {

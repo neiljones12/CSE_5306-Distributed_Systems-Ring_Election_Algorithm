@@ -4,10 +4,11 @@
     <link href="stylesheets/style.css" rel="stylesheet" />
     <link href="stylesheets/bootstrap.min.css" rel="stylesheet" />
     <link href="stylesheets/font-awesome.css" rel="stylesheet" />
+
 </head>
 <body ng-controller="Controller" ng-init="init()">
     <div ng-show="client">
-        <div class="containter" style="padding:50px">
+        <div class="containter" style="padding:10px">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h1>Assignment 2</h1>
@@ -21,43 +22,60 @@
                         <h3 class="card-header">Ring Election Algorithm</h3>
                         <div class="card-block">
                             <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
-                            <div ng-hide="initialize">
-                                <p>First we need to start the processes. Click <a class="processes"><span class="lead" style="color:blue">here</span> </a> to launch the 6 processes</p>
+                            <div>
+                                <p>First we need to start the processes. Click <a class="processes"><span class="lead" style="color:blue">here</span> </a> to launch the 6 processes or start the processes individually</p>
+                                <p>(if this page is refreshed, all the processes need to be restarted)</p>
                                 <p class="small">Make sure pop ups are allowed on this page</p>
                             </div>
-                            <div ng-show="initialize">
-
-                            </div> 
+                            <p>The <span style="color:#e74c3c">Red border</span> shows the process is offline</p>
+                            <p>The <span style="color:#2ecc71">Green border</span> shows the process is online</p>
+                            <p>The <span style="color:#3498db">Blue border</span> shows the process is the leader</p>
+                            <p>The <span style="color:#e67e22">Orange border</span> shows the current process</p>
                             <hr />
-                            <div ng-repeat="d in data">
-                                <div ng-show="d.online">
-                                    <div ng-show="d.isLeader">
-                                        <button type="button" class="btn btn-success">Process: {{d.process}}</button>
-                                        <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
-
-                                    </div>
-                                    <div ng-hide="d.isLeader">
-                                        <button type="button" class="btn btn-outline-success">{{d.process}}</button>
-                                        <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
-                                    </div>
-                                </div>
-                                <div ng-hide="d.online">
-                                    <button type="button" class="btn btn-outline-secondary">{{d.process}}</button>
-                                    <button type="button" class="btn btn-outline-info" ng-click="restart(d.process)">Restart</button>
-                                </div>
-                                <br />
-                            </div>
-                        </div>
-                        <!--<div class="card-footer text-right">
-                                <button type="button" class="btn btn-secondary btn-lg" ng-click="startSimulation()">Start</button>
-                        </div>-->
+                            <lead>Also a process can be manually crashed/restarted by clicking on it. A process can be manually crashed by closing the tab associated with it</lead>
+                        </div> 
                     </div>
 
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-4">
+                    <ul class='circle-container'> 
+                        <li ng-repeat="d in data">
+                            <div ng-show="d.online">
+                                <div ng-show="d.isLeader">
+                                    <img src="images/{{d.process}}.jpg" class="leader" ng-click="crash(d.process)"/>
+                                </div>
+                                <div ng-hide="d.isLeader">
+                                    <img src="images/{{d.process}}.jpg" class="online" ng-click="crash(d.process)"/>
+                                 </div>
+                            </div>
+                            <div ng-hide="d.online">
+                                <img src="images/{{d.process}}.jpg" class="offline" ng-click="restart(d.process)"/>
+                             </div> 
+                        </li>
+                        <!--<li ng-repeat="d in data">
+                            <div ng-show="d.online">
+                                <div ng-show="d.isLeader">
+                                    <button type="button" class="btn btn-success">Leader: {{d.process}}</button>
+                                    <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
+
+                                </div>
+                                <div ng-hide="d.isLeader">
+                                    <button type="button" class="btn btn-outline-success">{{d.process}}</button>
+                                    <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
+                                </div>
+                            </div>
+                            <div ng-hide="d.online">
+                                <button type="button" class="btn btn-outline-secondary">{{d.process}}</button>
+                                <button type="button" class="btn btn-outline-info" ng-click="restart(d.process)">Restart</button>
+                            </div>
+                            <br />
+                        </li>-->
+                    </ul>
+                </div>
+                <div class="col-lg-4">
                     <div class="card">
                         <h3 class="card-header">Log</h3>
-                        <div class="card-block" style="height:570px; overflow-y: scroll;">
+                        <div class="card-block" style="height:520px; overflow-y: scroll;">
                             <div ng-hide="startMessage">
                                 <div ng-repeat="m in logMessage">
                                     <p>{{m.message}}</p>
@@ -73,9 +91,10 @@
         </div>
     </div>
     <div ng-hide="client">
-        <h1>This tab was created to start a process.</h1>
-        <h2>Go to the tab with address http://localhost:3000 to start the simulation</h2>
-       
+        <div class="middle">   
+            <h1>This tab was created to start process {{processNo}}</h1>
+            <h2>Go to the tab with address http://localhost:3000 to view the simulation</h2>
+        </div> 
     </div>
 
 
@@ -96,6 +115,7 @@
             window.open('http://localhost:3005/');
             window.open('http://localhost:3006/');
         });
+
     </script>
 </body>
 </html>
