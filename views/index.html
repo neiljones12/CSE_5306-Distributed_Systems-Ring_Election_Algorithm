@@ -52,33 +52,15 @@
                                 <img src="images/{{d.process}}.jpg" class="offline" ng-click="restart(d.process)"/>
                              </div> 
                         </li>
-                        <!--<li ng-repeat="d in data">
-                            <div ng-show="d.online">
-                                <div ng-show="d.isLeader">
-                                    <button type="button" class="btn btn-success">Leader: {{d.process}}</button>
-                                    <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
-
-                                </div>
-                                <div ng-hide="d.isLeader">
-                                    <button type="button" class="btn btn-outline-success">{{d.process}}</button>
-                                    <button type="button" class="btn btn-outline-danger" ng-click="crash(d.process)">Crash</button>
-                                </div>
-                            </div>
-                            <div ng-hide="d.online">
-                                <button type="button" class="btn btn-outline-secondary">{{d.process}}</button>
-                                <button type="button" class="btn btn-outline-info" ng-click="restart(d.process)">Restart</button>
-                            </div>
-                            <br />
-                        </li>-->
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <div class="card">
-                        <h3 class="card-header">Log</h3>
+                        <h3 class="card-header">Log - <small>The latest log is shown on top</small></h3>
                         <div class="card-block" style="height:520px; overflow-y: scroll;">
                             <div ng-hide="startMessage">
                                 <div ng-repeat="m in logMessage">
-                                    <p>{{m.message}}</p>
+                                    <p ng-class="m.class">{{m.message}}</p>
                                 </div>
                             </div>
                             <div ng-show="startMessage">

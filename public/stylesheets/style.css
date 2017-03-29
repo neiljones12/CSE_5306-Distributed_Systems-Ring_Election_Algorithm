@@ -94,3 +94,9 @@
     top: 50%;
     width: 100%;
 }
+.log-online{
+    color: #2ecc71;
+}
+.log-offline{
+    color: #e74c3c;
+}

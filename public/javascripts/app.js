@@ -26,9 +26,9 @@ app.factory('socket', function ($rootScope) {
 });
 
 //Controller definition 
-app.controller('Controller', function ($scope, $http, $localStorage, $location,$window, socket) {
+app.controller('Controller', function ($scope, $http, $localStorage, $location, $window, socket) {
 
-
+    //Custom function to sort the array
     var sort_by = function (field, reverse, primer) {
 
         var key = primer ?
@@ -42,6 +42,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
         }
     }
 
+    //Custom function to sort the log messages
     var log_sort_by = function (field, reverse, primer) {
 
         var key = primer ?
@@ -55,15 +56,16 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
         }
     }
 
+    //Initialization method. Called when the page is loaded
     $scope.init = function () {
 
         $scope.startMessage = true;
-        $scope.initialize = false; 
+        $scope.initialize = false;
         $scope.client = false;
-        $scope.data = [];
+        //$scope.data = [];
         $scope.data = [
             {
-                process:1,
+                process: 1,
                 online: false,
                 isLeader: false,
                 current: false,
@@ -106,14 +108,15 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
             }
         ];
 
-        $scope.message = []; 
+        $scope.message = [];
         $scope.logMessage = [];
 
+        //Checks to see if the window is the client window or the process window
         if ($location.port() == 3000) {
             $scope.client = true;
         }
-        else
-        {
+        else {
+            //If it is a process window, the appropriate process number is assigned
             switch ($location.port()) {
                 case 3001: $scope.processNo = 1;
                     break;
@@ -129,17 +132,22 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
                     break;
             }
         }
-        
+
     };
-    
+
+    //Waiting for the socket to communicate to the client
     socket.on('process_connection', (data) => {
+        //This updates the process status in the GUI based on if its online or offline
         $scope.initialize = true;
         var check = true;
+        $scope.startMessage = false;
         for (var i = 0; i < $scope.data.length; i++) {
             if ($scope.data[i].process == data.process) {
                 check = false;
                 $scope.data[i].online = data.online;
                 $scope.data[i].closed = data.closed;
+                $scope.showConnectionMessage(data.online, data.process);
+                console.log($scope.logMessage);
             }
         }
 
@@ -151,64 +159,90 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location,$
                 current: false,
                 closed: data.closed
             });
-            $scope.data.sort(sort_by('process', true, parseInt));
-        }
-
+            $scope.showConnectionMessage(data.online, data.process);
+        } 
+        $scope.data.sort(sort_by('process', true, parseInt));
         $scope.startSimulation();
     });
 
-    $scope.startSimulation = function () {
-
-        $scope.startMessage = false;
-
-        var max = 0;
-        for (var i = 0; i < $scope.data.length; i++) {
-            if ($scope.data[i].online) {
+    //This method updates the status of the process on the log
+    $scope.showConnectionMessage = function (online, process) {
+        switch (online) {
+            case true: $scope.logMessage.push({
+                id: $scope.logMessage.length,
+                message: "Process: " + process + " has come online",
+                class: "log-online"
+            });
+                break;
+            case false:
                 $scope.logMessage.push({
                     id: $scope.logMessage.length,
-                    message: $scope.data[i].process +" sends message"
+                    message: "Process: " + process + " has gone offline",
+                    class: "log-offline"
                 });
-                if ($scope.data[i].process > max) {
-                    max = $scope.data[i].process;
-                }
-            }
-            $scope.data[i].isLeader = false;
+                break;
         }
-        $scope.data[max - 1].isLeader = true;
-        $scope.logMessage.push({
-            id: $scope.logMessage.length,
-            message: "Process " + max + " is chosen as the leader as it is the largest"
-        });
-        $scope.logMessage.push({
-            id: $scope.logMessage.length,
-            message: "-----------------------------------------"
-        });
         $scope.logMessage.sort(log_sort_by('id', true, parseInt));
     };
 
+    //This method starts the ring election algorithm simulation
+    //$scope.startSimulation = function () {
 
+    //    $scope.startMessage = false;
+
+    //    var max = 0;
+    //    for (var i = 0; i < $scope.data.length; i++) {
+    //        if ($scope.data[i].online) {
+    //            $scope.logMessage.push({
+    //                id: $scope.logMessage.length,
+    //                message: $scope.data[i].process +" sends message"
+    //            });
+    //            if ($scope.data[i].process > max) {
+    //                max = $scope.data[i].process;
+    //            }
+    //        }
+    //        $scope.data[i].isLeader = false;
+    //    }
+    //    $scope.data[max - 1].isLeader = true;
+    //    $scope.logMessage.push({
+    //        id: $scope.logMessage.length,
+    //        message: "Process " + max + " is chosen as the leader as it is the largest"
+    //    });
+    //    $scope.logMessage.push({
+    //        id: $scope.logMessage.length,
+    //        message: "-----------------------------------------"
+    //    });
+    //    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+    //};
+
+    $scope.startSimulation = function () {
+
+    };
+
+    //This method simulates a crash
     $scope.crash = function (id) {
         for (var i = 0; i < $scope.data.length; i++) {
             if ($scope.data[i].process == id) {
-                $scope.data[i].online = false; 
+                $scope.data[i].online = false;
+                $scope.showConnectionMessage($scope.data[i].online, $scope.data[i].process);
             }
         }
 
         $scope.startSimulation();
     };
 
+    //This method restarts a crashed server
     $scope.restart = function (id) {
-        for (var i = 0; i < $scope.data.length; i++) { 
-            if ($scope.data[i].process == id) {
-                if ($scope.data[i].closed)
-                {
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].process == id) { 
+                if ($scope.data[i].closed) {
                     var port = "300" + id;
-                    var url = "http://localhost:"+port+"/";
+                    var url = "http://localhost:" + port + "/";
                     $window.open(url);
                 }
-                else
-                {
-                    $scope.data[i].online = true; 
+                else {
+                    $scope.data[i].online = true;
+                    $scope.showConnectionMessage($scope.data[i].online, $scope.data[i].process);
                 }
             }
         }

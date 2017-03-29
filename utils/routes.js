@@ -188,30 +188,7 @@ class Routes {
                 socket.emit('process_connection', obj);
             });
         });
-        socket6.on('connect', function (data) {
-            //console.log("process 6 connected");
-
-            var obj = {
-                process: 6,
-                online: true,
-                closed: false
-            };
-
-            socket.emit('process_connection', obj);
-
-            data.on('disconnect', function (data) {
-                //console.log("process 6 disconnect");
-
-                var obj = {
-                    process: 6,
-                    online: false,
-                    closed: true
-                };
-
-                socket.emit('process_connection', obj);
-            });
-        });
-
+       
     }
 
     routesConfig() {
