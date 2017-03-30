@@ -19,7 +19,15 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card">
-                        <h3 class="card-header">Ring Election Algorithm</h3>
+                        <h3 class="card-header">
+                            Ring Election Algorithm
+                            <span ng-hide="start">
+                                <button ng-click="startSimulation()" type="button" class="btn btn-secondary pull-right">Start Simulation</button>
+                            </span>
+                            <span ng-show="start">
+                               <small class="log-online pull-right">Simulation Running</small> 
+                            </span>
+                        </h3>
                         <div class="card-block">
                             <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
                             <div>
@@ -33,31 +41,40 @@
                             <p>The <span style="color:#e67e22">Orange border</span> shows the current process</p>
                             <hr />
                             <lead>Also a process can be manually crashed/restarted by clicking on it. A process can be manually crashed by closing the tab associated with it</lead>
-                        </div> 
+                        </div>
                     </div>
 
                 </div>
                 <div class="col-lg-4">
-                    <ul class='circle-container'> 
+                    <ul class='circle-container'>
                         <li ng-repeat="d in data">
                             <div ng-show="d.online">
-                                <div ng-show="d.isLeader">
-                                    <img src="images/{{d.process}}.jpg" class="leader" ng-click="crash(d.process)"/>
+                                <div ng-show="d.current">
+                                    <img src="images/{{d.process}}.jpg" class="current" ng-click="crash(d.process)" />
                                 </div>
-                                <div ng-hide="d.isLeader">
-                                    <img src="images/{{d.process}}.jpg" class="online" ng-click="crash(d.process)"/>
-                                 </div>
+                                <div ng-hide="d.current">
+                                    <div ng-show="d.isLeader">
+                                        <img src="images/{{d.process}}.jpg" class="leader" ng-click="crash(d.process)" />
+                                    </div>
+                                    <div ng-hide="d.isLeader">
+                                        <img src="images/{{d.process}}.jpg" class="online" ng-click="crash(d.process)" />
+                                    </div>
+                                </div>
                             </div>
                             <div ng-hide="d.online">
-                                <img src="images/{{d.process}}.jpg" class="offline" ng-click="restart(d.process)"/>
-                             </div> 
+                                <img src="images/{{d.process}}.jpg" class="offline" ng-click="restart(d.process)" />
+                            </div>
                         </li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
                     <div class="card">
-                        <h3 class="card-header">Log - <small>The latest log is shown on top</small></h3>
+                        <h3 class="card-header">Log - <small>The latest log is shown on top</small> </h3>
                         <div class="card-block" style="height:520px; overflow-y: scroll;">
+                            <div ng-show="counterMessage">
+                                <h4>{{message}} {{counter}} s</h4>
+                                <hr />
+                            </div> 
                             <div ng-hide="startMessage">
                                 <div ng-repeat="m in logMessage">
                                     <p ng-class="m.class">{{m.message}}</p>
@@ -73,10 +90,10 @@
         </div>
     </div>
     <div ng-hide="client">
-        <div class="middle">   
+        <div class="middle">
             <h1>This tab was created to start process {{processNo}}</h1>
             <h2>Go to the tab with address http://localhost:3000 to view the simulation</h2>
-        </div> 
+        </div>
     </div>
 
 
@@ -96,6 +113,8 @@
             window.open('http://localhost:3004/');
             window.open('http://localhost:3005/');
             window.open('http://localhost:3006/');
+            window.open('http://localhost:3007/');
+            window.open('http://localhost:3008/');
         });
 
     </script>

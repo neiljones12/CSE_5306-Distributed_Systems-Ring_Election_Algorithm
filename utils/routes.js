@@ -3,7 +3,7 @@ class Routes {
 
     constructor(app, socket) {
         this.app = app;
-        this.io = socket; 
+        this.io = socket;
 
         //process Ports
         this.process_1 = 3001;
@@ -12,6 +12,8 @@ class Routes {
         this.process_4 = 3004;
         this.process_5 = 3005;
         this.process_6 = 3006;
+        this.process_7 = 3007;
+        this.process_8 = 3008;
     }
 
     appRoutes() {
@@ -23,16 +25,15 @@ class Routes {
     }
 
     socketEvents() {
-        var socket = this.io;      
+        var socket = this.io;
 
         var process1 = this.app.listen(this.process_1);
         var socket1 = require('socket.io').listen(process1);
 
         socket1.on('connect', function (data) {
-            //console.log("process 1 connected");
 
             var obj = {
-                process: 1,
+                process: 0,
                 online: true,
                 closed: false
             };
@@ -40,10 +41,9 @@ class Routes {
             socket.emit('process_connection', obj);
 
             data.on('disconnect', function (data) {
-                //console.log("process 1 disconnect");
 
                 var obj = {
-                    process: 1,
+                    process: 0,
                     online: false,
                     closed: true
                 };
@@ -58,10 +58,9 @@ class Routes {
         var socket2 = require('socket.io').listen(process2);
 
         socket2.on('connect', function (data) {
-            //console.log("process 2 connected");
 
             var obj = {
-                process: 2,
+                process: 1,
                 online: true,
                 closed: false
             };
@@ -69,10 +68,9 @@ class Routes {
             socket.emit('process_connection', obj);
 
             data.on('disconnect', function (data) {
-                //console.log("process 2 disconnect");
-                
+
                 var obj = {
-                    process: 2,
+                    process: 1,
                     online: false,
                     closed: true
                 };
@@ -85,10 +83,9 @@ class Routes {
         var socket3 = require('socket.io').listen(process3);
 
         socket3.on('connect', function (data) {
-            //console.log("process 3 connected");
-            
+
             var obj = {
-                process: 3,
+                process: 2,
                 online: true,
                 closed: false
             };
@@ -96,10 +93,9 @@ class Routes {
             socket.emit('process_connection', obj);
 
             data.on('disconnect', function (data) {
-                //console.log("process 3 disconnect");
-                
+
                 var obj = {
-                    process: 3,
+                    process: 2,
                     online: false,
                     closed: true
                 };
@@ -112,10 +108,9 @@ class Routes {
         var socket4 = require('socket.io').listen(process4);
 
         socket4.on('connect', function (data) {
-            //console.log("process 4 connected");
-            
+
             var obj = {
-                process: 4,
+                process: 3,
                 online: true,
                 closed: false
             };
@@ -123,10 +118,9 @@ class Routes {
             socket.emit('process_connection', obj);
 
             data.on('disconnect', function (data) {
-                //console.log("process 4 disconnect");
-                
+
                 var obj = {
-                    process: 4,
+                    process: 3,
                     online: false,
                     closed: true
                 };
@@ -139,10 +133,9 @@ class Routes {
         var socket5 = require('socket.io').listen(process5);
 
         socket5.on('connect', function (data) {
-            //console.log("process 5 connected");
-            
+
             var obj = {
-                process: 5,
+                process: 4,
                 online: true,
                 closed: false
             };
@@ -150,10 +143,9 @@ class Routes {
             socket.emit('process_connection', obj);
 
             data.on('disconnect', function (data) {
-                //console.log("process 5 disconnect");
-                
+
                 var obj = {
-                    process: 5,
+                    process: 4,
                     online: false,
                     closed: true
                 };
@@ -166,7 +158,31 @@ class Routes {
         var socket6 = require('socket.io').listen(process6);
 
         socket6.on('connect', function (data) {
-            //console.log("process 6 connected");
+
+            var obj = {
+                process: 5,
+                online: true,
+                closed: false
+            };
+
+            socket.emit('process_connection', obj);
+
+            data.on('disconnect', function (data) {
+
+                var obj = {
+                    process: 5,
+                    online: false,
+                    closed: true
+                };
+
+                socket.emit('process_connection', obj);
+            });
+        });
+
+        var process7 = this.app.listen(this.process_7);
+        var socket7 = require('socket.io').listen(process7);
+
+        socket7.on('connect', function (data) {
 
             var obj = {
                 process: 6,
@@ -177,8 +193,7 @@ class Routes {
             socket.emit('process_connection', obj);
 
             data.on('disconnect', function (data) {
-                //console.log("process 6 disconnect");
-                
+
                 var obj = {
                     process: 6,
                     online: false,
@@ -188,7 +203,31 @@ class Routes {
                 socket.emit('process_connection', obj);
             });
         });
-       
+
+        var process8 = this.app.listen(this.process_8);
+        var socket8 = require('socket.io').listen(process8);
+
+        socket8.on('connect', function (data) {
+
+            var obj = {
+                process: 7,
+                online: true,
+                closed: false
+            };
+
+            socket.emit('process_connection', obj);
+
+            data.on('disconnect', function (data) {
+
+                var obj = {
+                    process: 7,
+                    online: false,
+                    closed: true
+                };
+
+                socket.emit('process_connection', obj);
+            });
+        });
     }
 
     routesConfig() {
