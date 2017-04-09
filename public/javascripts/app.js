@@ -286,6 +286,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
         $scope.token = [];
         $scope.resetCurrent();
+        $scope.leaderOfflineDetect = false;
     };
 
     $scope.checkLeader = function () {
@@ -330,6 +331,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             $scope.startMessage = false;
             $scope.token = [];
 
+            $scope.leaderOfflineDetect = false;
+
             $scope.$watch('counter', function () {
                 var mod = $scope.counter % 8;
                 console.log(mod);
@@ -337,6 +340,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 0:
                         if ($scope.data[0].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 0 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(0)) {
                                     $scope.resetCurrent();
                                     $scope.data[0].current = true;
@@ -366,6 +381,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 1:
                         if ($scope.data[1].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 1 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(1)) {
                                     $scope.resetCurrent();
                                     $scope.data[1].current = true;
@@ -395,6 +422,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 2:
                         if ($scope.data[2].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 2 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(2)) {
                                     $scope.resetCurrent();
                                     $scope.data[2].current = true;
@@ -424,8 +463,20 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                         break;
                     case 3:
                         if ($scope.data[3].online) {
-                            if (!$scope.checkLeader(3)) {
-                                if (!$scope.checkToken()) {
+                            if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 3 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
+                                if (!$scope.checkToken(3)) {
                                     $scope.resetCurrent();
                                     $scope.data[3].current = true;
                                     $scope.token.push(3);
@@ -454,6 +505,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 4:
                         if ($scope.data[4].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 4 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(4)) {
                                     $scope.resetCurrent();
                                     $scope.data[4].current = true;
@@ -483,6 +546,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 5:
                         if ($scope.data[5].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 5 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(5)) {
                                     $scope.resetCurrent();
                                     $scope.data[5].current = true;
@@ -512,6 +587,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 6:
                         if ($scope.data[6].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 6 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(6)) {
                                     $scope.resetCurrent();
                                     $scope.data[6].current = true;
@@ -541,6 +628,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     case 7:
                         if ($scope.data[7].online) {
                             if (!$scope.checkLeader()) {
+
+                                if (!$scope.leaderOfflineDetect) {
+                                    $scope.leaderOfflineDetect = true;
+                                    $scope.logMessage.push({
+                                        id: $scope.logMessage.length,
+                                        message: "Process: " + 7 + " detected the leader is offline",
+                                        class: "log-offline"
+                                    });
+
+                                    $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+                                }
+
                                 if (!$scope.checkToken(7)) {
                                     $scope.resetCurrent();
                                     $scope.data[7].current = true;
