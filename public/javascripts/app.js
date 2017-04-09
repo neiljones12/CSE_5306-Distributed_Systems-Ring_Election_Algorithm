@@ -62,7 +62,8 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
         $scope.startMessage = true;
         $scope.initialize = false;
         $scope.client = false;
-        $scope.counter = 5;
+        $scope.counter = 0;
+        $scope.counterMessage = true; 
         $scope.data = [
             {
                 process: 0,
@@ -199,8 +200,80 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
     var mytimeout = $timeout($scope.onTimeout, 1000);
 
     $scope.stop = function () {
+        $scope.counterMessage = false;
         $timeout.cancel(mytimeout);
     }
+
+    $scope.resetCurrent = function () {
+        for (var i = 0; i < $scope.data.length; i++) {
+            $scope.data[i].current = false;
+        }
+    }
+
+    $scope.resetLeader = function () {
+        for (var i = 0; i < $scope.data.length; i++) {
+            $scope.data[i].isLeader = false;
+        }
+    }
+
+    $scope.nextProcess = function (process) {
+        $scope.resetCurrent();
+        $scope.data[process].current = true;
+
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "Process " + $scope.data[process].process + " is the current process"
+        });
+
+        $scope.token.push($scope.data[process].process);
+
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "Token array passed: " + $scope.token,
+            class: "log-leader"
+        });
+
+        $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+    }
+
+    $scope.tokenCompleted = function (process) {
+        $scope.resetCurrent();
+        $scope.data[process].current = true;
+
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "The token message has come back to the process that started it",
+            class: "log-online"
+        });
+
+        var max = -1;
+        for (var i = 0; i < $scope.token.length; i++) {
+            if (max < $scope.token[i]) {
+                max = $scope.token[i];
+            }
+        }
+
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "The new elected leader is process: " + max,
+            class: "log-leader"
+        });
+
+        $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+    }
+
+    $scope.assignLeader = function () {
+        var max = -1;
+        for (var i = 0; i < $scope.token.length; i++) {
+            if (max < $scope.token[i]) {
+                max = $scope.token[i];
+            }
+        }
+
+        if (max > -1) {
+            $scope.data[max].isLeader = true;
+        }
+    };
 
     //This method starts the ring election algorithm simulation
     $scope.startSimulation = function () {
@@ -214,14 +287,20 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             $scope.startMessage = false;
         }
         else {
+
+            $scope.resetLeader();
+
             $scope.start = true;
             $scope.startMessage = false;
             $scope.token = [];
             var max = 0;
             var leader = $scope.findLeader();
 
+            
             //If a leader cannot be found
             if (!leader) {
+                 
+                $scope.counter = 0;
 
                 $scope.logMessage.push({
                     id: $scope.logMessage.length,
@@ -236,7 +315,6 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 });
 
                 var first = $scope.findFirstOnline();
-
                 $scope.data[first].current = true;
 
                 $scope.logMessage.push({
@@ -246,31 +324,106 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
                 $scope.token.push($scope.data[first].process);
 
-                var nextOnline = $scope.findNextOnline(first);
-                if (nextOnline == first) {
-                    $scope.logMessage.push({
-                        id: $scope.logMessage.length,
-                        message: "Process " + $scope.data[first].process + " is the only online process and is elected the leader",
-                        class: "log-leader"
-                    });
-                    $scope.data[first].current = false;
-                    $scope.data[first].isLeader = true;
+                var isTokenComplete = false;
+
+
+                var second = $scope.findNextOnline(first);
+                if (second != first) {
+                    $scope.nextProcess(second);
+                }
+                else {
+                    $scope.tokenCompleted(second);
+                    isTokenComplete = true;
                 }
 
-                $scope.counterMessage = true;
-                $scope.message = "Process " + $scope.data[first].process + " will check for the next succesor in "
-                $scope.counter = 5;
-                $scope.$watch('counter', function () {
-                    if ($scope.counter == -1) {
-                        //$scope.counter = 5; 
+                if (!isTokenComplete) {
+                    var third = $scope.findNextOnline(second);
+                    if (third != first) {
+                        $scope.nextProcess(third);
                     }
-                });
+                    else {
+                        $scope.tokenCompleted(third);
+                        isTokenComplete = true;
+                    }
+                }
 
+
+                if (!isTokenComplete) {
+                    var fourth = $scope.findNextOnline(third);
+                    if (fourth != first) {
+                        $scope.nextProcess(fourth);
+                    }
+                    else {
+                        $scope.tokenCompleted(fourth);
+                        isTokenComplete = true;
+                    }
+                }
+
+
+                if (!isTokenComplete) {
+                    var fifth = $scope.findNextOnline(fourth);
+                    if (fifth != first) {
+                        $scope.nextProcess(fifth);
+                    }
+                    else {
+                        $scope.tokenCompleted(fifth);
+                        isTokenComplete = true;
+                    }
+                }
+
+
+                if (!isTokenComplete) {
+                    var sixth = $scope.findNextOnline(fifth);
+                    if (sixth != first) {
+                        $scope.nextProcess(sixth);
+                    }
+                    else {
+                        $scope.tokenCompleted(sixth);
+                        isTokenComplete = true;
+                    }
+                }
+
+
+                if (!isTokenComplete) {
+                    var seventh = $scope.findNextOnline(sixth);
+                    if (seventh != first) {
+                        $scope.nextProcess(seventh);
+                    }
+                    else {
+                        $scope.tokenCompleted(seventh);
+                        isTokenComplete = true;
+                    }
+                }
+
+
+                if (!isTokenComplete) {
+                    var eighth = $scope.findNextOnline(seventh);
+                    if (eighth != first) {
+                        $scope.nextProcess(eighth);
+                    }
+                    else {
+                        $scope.tokenCompleted(eighth);
+                        isTokenComplete = true;
+                    }
+                }
+
+
+                var last = $scope.findNextOnline(eighth);
+                if (last == first) {
+                    $scope.tokenCompleted(last);
+                    isTokenComplete = true;
+                }
+
+                 
             }
                 //If a leader is found
             else {
 
             }
+
+
+            //$scope.assignLeader();
+
         }
         $scope.logMessage.sort(log_sort_by('id', true, parseInt));
     };
@@ -343,7 +496,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             }
         }
 
-        //$scope.startSimulation();
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "------------------------------------------------"
+        });
+
+        $scope.logMessage.push({
+            id: $scope.logMessage.length,
+            message: "Process: " + id + " has come online. Election process has restarted",
+            class: "log-online"
+        });
+        $scope.logMessage.sort(log_sort_by('id', true, parseInt));
+        $scope.startSimulation();
     };
 
 });
