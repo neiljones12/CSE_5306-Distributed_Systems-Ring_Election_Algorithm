@@ -190,6 +190,23 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             if ($scope.data[i].process == data.process) {
                 check = false;
                 $scope.data[i].online = data.online;
+
+                if(data.online)
+                {
+                    $scope.data[i].online = true;
+
+                    var message = "Process: " + i + " has come online. Election initiated";
+                    var type = "";
+
+                    $scope.message(message, type);
+                    $scope.counter = i;
+
+                    $scope.token = [];
+
+                    $scope.resetLeader();
+                    
+                }
+
                 $scope.data[i].closed = data.closed;
                 //$scope.showConnectionMessage(data.online, data.process);
             }
@@ -595,7 +612,6 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             $scope.tokenMessage = true;
             $scope.cMessage = false;
         }
-
         //Communicating with the socket
         socket.emit('proces', $scope.data);
     }
