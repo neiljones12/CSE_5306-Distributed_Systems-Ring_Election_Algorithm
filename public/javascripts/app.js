@@ -221,8 +221,16 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                     $window.open(url);
                 }
                 else {
+
                     $scope.data[i].online = true;
-                    $scope.showConnectionMessage($scope.data[i].online, $scope.data[i].process);
+
+                    var message = "Process: " + i + " has come online. Election initiated";
+                    var type = "";
+
+                    $scope.message(message, type);
+                    $scope.counter = i;
+                    $scope.resetLeader();
+
                 }
             }
         }
@@ -248,7 +256,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
                     if ($scope.tokenMessage) {
                         if ($scope.token == "") {
-                            var message = "Process: " + mod + " detected the leader is offline";
+                            var message = "Process: " + mod + " starts the ELECTION";
                             var type = "log-token";
 
                             $scope.message(message, type);
@@ -286,7 +294,6 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
                 }
             }
         }
-
             //Multi election 
         else if ($scope.multiElection) {
             if ($scope.firstRun) {
@@ -323,7 +330,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
                     if ($scope.tokenMessage1) {
                         if ($scope.token1 == "") {
-                            var message = "Process: " + mod + " detected the leader is offline";
+                            var message = "Process: " + mod + " starts the ELECTION(1)";
                             var type = "";
 
                             $scope.message(message, type);
@@ -389,7 +396,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
                     if ($scope.tokenMessage2) {
                         if ($scope.token2 == "") {
-                            var message = "Process: " + mod + " detected the leader is offline";
+                            var message = "Process: " + mod + " starts the ELECTION(2)";
                             var type = "";
 
                             $scope.message(message, type);
@@ -438,7 +445,7 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
         }
     })
-     
+
 
     $scope.coordinatorMessageMulti = function (id) {
         if ($scope.cMessage1) {
@@ -621,10 +628,9 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
             $scope.cMessage1 = false;
             $scope.cMessage2 = false;
 
+            $scope.timer1 = false;
+            $scope.timer2 = false;
             $scope.timer3 = false;
-
-            $scope.timer1 = true;
-            $scope.timer2 = true;
 
             $scope.firstRun = true;
         }
@@ -679,6 +685,18 @@ app.controller('Controller', function ($scope, $http, $localStorage, $location, 
 
         //Communicating with the socket
         socket.emit('proces', $scope.data);
+    }
+
+    //Function to return leader id
+    $scope.leaderId = function () {
+        var id = -1;
+        for (var i = 0; i < $scope.data.length; i++) {
+            if ($scope.data[i].isLeader) {
+                id = i;
+            }
+        }
+
+        return id;
     }
 
     //Function to assign the colour to the current process in the UI
