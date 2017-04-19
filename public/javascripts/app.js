@@ -2,7 +2,7 @@
 //----------------------NEIL JONES----------------------
 //----------------------1001371689----------------------
 
-const app = angular.module('app', ['ngStorage']);
+const app = angular.module('app', []);
 
 //Factory definition to integrate socket.io in order to use sockets with node.js
 app.factory('socket', function ($rootScope) {
