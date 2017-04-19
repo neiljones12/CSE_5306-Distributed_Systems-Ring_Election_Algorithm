@@ -27,8 +27,8 @@
                         <h4 class="card-header">
                             Ring Election Algorithm
                             <span class="small">
-                                <input type="checkbox" ng-model="multiElection" /> Multi Election 
-                            </span> 
+                                <input type="checkbox" ng-model="multiElection" /> Multi Election
+                            </span>
                         </h4>
                         <div class="card-block">
                             <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
@@ -44,9 +44,8 @@
                             <hr />
                             <lead>Also a process can be manually crashed/restarted by clicking on it. A process can be manually crashed by closing the tab associated with it</lead>
                         </div>
-                    </div> 
-                </div>
-
+                    </div>
+                </div> 
                 <!--The Ring UI-->
                 <div class="col-sm-4">
                     <ul class='circle-container'>
@@ -79,7 +78,7 @@
                             <div ng-show="counterMessage">
                                 <h4>Simulation timer: {{counter}} s</h4>
                                 <hr />
-                            </div> 
+                            </div>
                             <div ng-hide="startMessage">
                                 <div ng-repeat="m in logMessage">
                                     <p ng-class="m.class">{{m.message}}</p>

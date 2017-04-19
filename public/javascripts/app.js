@@ -30,7 +30,7 @@ app.factory('socket', function ($rootScope) {
 });
 
 //Controller definition 
-app.controller('Controller', function ($scope, $http, $localStorage, $location, $window, $timeout, socket) {
+app.controller('Controller', function ($scope, $http, $location, $window, $timeout, socket) {
 
     //Custom function to sort the array
     var sort_by = function (field, reverse, primer) {
