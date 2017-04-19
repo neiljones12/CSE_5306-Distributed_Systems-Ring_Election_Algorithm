@@ -1,3 +1,7 @@
+/*--------------------SUBMITTED BY--------------------
+----------------------NEIL JONES----------------------
+----------------------1001371689----------------------*/
+
 .circle-container {
     position: relative;
     width: 20em;
@@ -139,4 +143,20 @@
 
 .log-leader {
     color: #3498db;
+}
+
+.log-cMessage {
+    color: #9b59b6;
+}
+
+.log-token{
+    color: #2ecc71;
+}
+
+.log-token1{
+    color: #1abc9c;
+}
+
+.log-token2{
+    color: #2980b9;
 }

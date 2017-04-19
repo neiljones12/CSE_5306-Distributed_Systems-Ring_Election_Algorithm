@@ -1,6 +1,9 @@
+<!--------------------SUBMITTED BY--------------------
+----------------------NEIL JONES----------------------
+----------------------1001371689------------------------>
+
 <html ng-app="app">
 <head>
-    <!--<link href="stylesheets/login.css" rel="stylesheet" />-->
     <link href="stylesheets/style.css" rel="stylesheet" />
     <link href="stylesheets/bootstrap.min.css" rel="stylesheet" />
     <link href="stylesheets/font-awesome.css" rel="stylesheet" />
@@ -16,17 +19,16 @@
                     <br />
                 </div>
             </div>
+
+            <!--The left pannel of the UI-->
             <div class="row">
                 <div class="col-sm-4">
                     <div class="card">
                         <h4 class="card-header">
                             Ring Election Algorithm
-                            <span ng-hide="start">
-                                <button ng-click="startSimulation()" type="button" class="btn btn-secondary pull-right">Start Simulation</button>
-                            </span>
-                            <span ng-show="start">
-                               <small class="log-online pull-right">Simulation Running</small> 
-                            </span>
+                            <span class="small">
+                                <input type="checkbox" ng-model="multiElection" /> Multi Election 
+                            </span> 
                         </h4>
                         <div class="card-block">
                             <p>Purpose of this assignment is to show the selection of a new process using the <span class="lead">Ring Election Algorithm</span></p>
@@ -42,9 +44,10 @@
                             <hr />
                             <lead>Also a process can be manually crashed/restarted by clicking on it. A process can be manually crashed by closing the tab associated with it</lead>
                         </div>
-                    </div>
-
+                    </div> 
                 </div>
+
+                <!--The Ring UI-->
                 <div class="col-sm-4">
                     <ul class='circle-container'>
                         <li ng-repeat="d in data">
@@ -67,6 +70,8 @@
                         </li>
                     </ul>
                 </div>
+
+                <!--The Log UI-->
                 <div class="col-sm-4">
                     <div class="card">
                         <h3 class="card-header">Log - <small>The latest log is shown on top</small> </h3>
